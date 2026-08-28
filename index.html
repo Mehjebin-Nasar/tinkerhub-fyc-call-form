@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Year Coordinator — TinkerHub MESCET</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE1;
+    --paper: #FBF8EF;
+    --mustard: #E0A93E;
+    --coral: #E4623F;
+    --teal: #2C6E68;
+    --ink: #22201B;
+    --muted: #6b6558;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    background-image: radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+    background-size: 14px 14px;
+    background-position: -7px -7px;
+    background-attachment: fixed;
+    padding-bottom: 90px;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 24px 18px 40px; }
+
+  .tracker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    border-radius: 40px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .badges { display: flex; gap: 8px; }
+
+  .badge {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    background: var(--cream);
+    opacity: 0.35;
+    transition: all 0.2s ease;
+  }
+
+  .badge.done { background: var(--mustard); opacity: 1; transform: scale(1.08); }
+
+  .badge-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  .header {
+    background: var(--ink);
+    color: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 4px;
+    padding: 22px 20px;
+    transform: rotate(-0.6deg);
+    box-shadow: 6px 6px 0 var(--coral);
+    margin-bottom: 30px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 6px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1.03;
+    margin: 0 0 10px;
+  }
+
+  .header p { font-size: 14px; line-height: 1.55; max-width: 46ch; margin: 0; color: #E8E3D5; }
+  .header p strong { color: var(--mustard); }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--teal);
+    color: var(--cream);
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  .step {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    border-radius: 4px;
+    padding: 22px 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .step-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .step-icon { font-size: 20px; }
+  .step-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .step h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; margin: 4px 0 16px; }
+
+  label {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 16px;
+    margin: 0 0 6px;
+    padding-top: 4px;
+  }
+
+  .hint { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin: -2px 0 8px; }
+
+  input[type="text"], input[type="tel"], input[type="email"], input[type="url"],
+  textarea, select {
+    width: 100%;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    background: var(--cream);
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  input:focus, textarea:focus, select:focus { outline: 3px solid var(--coral); outline-offset: 1px; }
+
+  textarea { min-height: 60px; resize: vertical; }
+
+  .prompt-card {
+    background: var(--cream);
+    border: 2px dashed var(--ink);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .prompt-card p { margin: 0 0 4px; }
+  .prompt-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; }
+  .prompt-card ul { margin: 6px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+
+  .radio-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .radio-option { flex: 1 1 auto; position: relative; }
+  .radio-option input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+
+  .radio-option span {
+    display: block;
+    text-align: center;
+    padding: 10px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--cream);
+  }
+
+  .radio-option input:checked + span {
+    background: var(--teal);
+    color: var(--cream);
+    box-shadow: 3px 3px 0 var(--ink);
+    transform: translate(-2px, -2px);
+  }
+
+  .footer-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    text-align: center;
+    margin: 24px 0 10px;
+    line-height: 1.6;
+  }
+
+  button.submit {
+    width: 100%;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 19px;
+    padding: 15px;
+    background: var(--coral);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+
+  button.submit:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  button.submit:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+
+  .success {
+    display: none;
+    background: var(--teal);
+    color: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 4px;
+    padding: 26px 20px;
+    text-align: center;
+    box-shadow: 6px 6px 0 var(--coral);
+  }
+
+  .success h2 { font-family: 'Fraunces', serif; font-size: 26px; margin: 0 0 8px; }
+  .success p { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; margin: 0; line-height: 1.6; }
+  .success.show { display: block; }
+  #formEl.hide { display: none; }
+
+  .brandfoot { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 30px; }
+
+  @media (max-width: 420px) {
+    .header { transform: rotate(0deg); }
+    .tracker { top: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="tracker">
+    <div class="badges">
+      <div class="badge" id="b1">👤</div>
+      <div class="badge" id="b2">🌱</div>
+      <div class="badge" id="b3">🎥</div>
+      <div class="badge" id="b4">🤝</div>
+    </div>
+    <div class="badge-count" id="badgeCount">0 / 4 badges collected</div>
+  </div>
+
+  <div class="header">
+    <p class="eyebrow">Core Team Call · 2026–27</p>
+    <h1>First Year<br>Coordinator</h1>
+    <p>You don't need experience — just curiosity and a few hours a week for first-years. <strong>We'll guide you through the rest.</strong> Takes 5–7 minutes, plus one short video telling us your story.</p>
+    <span class="role-tag">~2–3 hrs / week · runs through the year</span>
+  </div>
+
+  <form id="formEl">
+
+    <div class="step">
+      <div class="step-head"><span class="step-icon">👤</span><span class="step-eyebrow">Step One</span></div>
+      <h2>Who are you?</h2>
+
+      <label for="name">Full Name*</label>
+      <input type="text" id="name" required>
+
+      <label for="email">College Email ID*</label>
+      <input type="email" id="email" required>
+
+      <label for="whatsapp">WhatsApp Number*</label>
+      <input type="tel" id="whatsapp" required>
+
+      <label for="roll">Roll number / Class*</label>
+      <input type="text" id="roll" placeholder="e.g. 26CS042, S1 CSE" required>
+
+      <label for="social">Instagram / LinkedIn / GitHub</label>
+      <p class="hint">Optional — show us what you've been making</p>
+      <input type="text" id="social">
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-icon">🌱</span><span class="step-eyebrow">Step Two</span></div>
+      <h2>The role</h2>
+      <div class="prompt-card">
+        <p class="tag">🌱 First Year Coordinator</p>
+        <p>Be the bridge that helps first-years find their way into TinkerHub from day one — onboarding, beginner-friendly sessions, and being the go-to person for first-year questions.</p>
+      </div>
+      <label for="idea">One idea to get first-years engaged*</label>
+      <p class="hint">This is the answer we care about most — go with your gut</p>
+      <textarea id="idea" required></textarea>
+
+      <label for="events">Have you attended any TinkerHub events so far?</label>
+      <p class="hint">Name what you remember — it's fine if it's just one</p>
+      <textarea id="events" style="min-height:50px;"></textarea>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-icon">🎥</span><span class="step-eyebrow">Step Three</span></div>
+      <h2>Tell us your story</h2>
+      <p style="font-size:13.5px; color:var(--muted); margin-top:-8px;">One short video (2–4 min) answering these — talking to your phone camera is fine.</p>
+
+      <div class="prompt-card">
+        <p class="tag">✦ General — everyone answers</p>
+        <ul>
+          <li>Why do you want to be First Year Coordinator?</li>
+          <li>Tell us about a time you took initiative — in school, class, or anywhere.</li>
+          <li>How will you balance this with academics as a first-year?</li>
+        </ul>
+      </div>
+
+      <div class="prompt-card">
+        <p class="tag">🌱 First Year Coordinator prompts</p>
+        <ul>
+          <li>How would you explain TinkerHub to a first-year who's never heard of it?</li>
+          <li>What's one thing that would have made your own first weeks on campus easier?</li>
+        </ul>
+      </div>
+
+      <label for="video">Video Link*</label>
+      <p class="hint">Google Drive ("Anyone with the link") or unlisted YouTube</p>
+      <input type="url" id="video" required>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-icon">🤝</span><span class="step-eyebrow">Step Four</span></div>
+      <h2>Can you commit?</h2>
+
+      <label>Can you give active time through the year?*</label>
+      <div class="radio-row">
+        <label class="radio-option"><input type="radio" name="commit" value="yes" required><span>YES</span></label>
+        <label class="radio-option"><input type="radio" name="commit" value="no"><span>NO</span></label>
+      </div>
+
+      <label>Will you attend mandatory core team meetings?*</label>
+      <div class="radio-row">
+        <label class="radio-option"><input type="radio" name="meetings" value="yes" required><span>YES</span></label>
+        <label class="radio-option"><input type="radio" name="meetings" value="no"><span>NO</span></label>
+      </div>
+
+      <label for="other">Other commitments that may affect your availability?</label>
+      <p class="hint">Optional</p>
+      <textarea id="other" style="min-height:50px;"></textarea>
+    </div>
+
+    <button type="submit" class="submit">Submit Application 🚀</button>
+    <p class="footer-note">Your response is saved directly — no email needed<br>TinkerHub MESCET · applications reviewed on a rolling basis</p>
+  </form>
+
+  <div class="success" id="successEl">
+    <h2>Got it! 🌱</h2>
+    <p>Your application's in. Someone from the core team will reach out on WhatsApp soon.</p>
+  </div>
+
+  <p class="brandfoot">TinkerHub · MESCET Chapter · 18,000+ Makers Across Kerala</p>
+</div>
+
+<script>
+  const badges = { b1: false, b2: false, b3: false, b4: false };
+
+  function updateBadges() {
+    const count = Object.values(badges).filter(Boolean).length;
+    document.getElementById('badgeCount').textContent = count + ' / 4 badges collected';
+    Object.keys(badges).forEach(id => {
+      document.getElementById(id).classList.toggle('done', badges[id]);
+    });
+  }
+
+  function checkStep(fields, badgeId) {
+    const ok = fields.every(f => {
+      const el = document.getElementById(f);
+      if (el) return el.value.trim() !== '';
+      return document.querySelector('input[name="' + f + '"]:checked');
+    });
+    badges[badgeId] = ok;
+    updateBadges();
+  }
+
+  ['name','email','whatsapp','roll'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => checkStep(['name','email','whatsapp','roll'], 'b1'));
+  });
+  document.getElementById('idea').addEventListener('input', () => checkStep(['idea'], 'b2'));
+  document.getElementById('video').addEventListener('input', () => checkStep(['video'], 'b3'));
+  document.querySelectorAll('input[name="commit"], input[name="meetings"]').forEach(el => {
+    el.addEventListener('change', () => checkStep(['commit','meetings'], 'b4'));
+  });
+
+  document.getElementById('formEl').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('formEl').classList.add('hide');
+    document.getElementById('successEl').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
