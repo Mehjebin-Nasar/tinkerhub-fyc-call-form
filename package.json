@@ -1,0 +1,10 @@
+{
+  "name": "tinkerhub-first-year-coordinator",
+  "version": "1.0.0",
+  "description": "TinkerHub MESCET First Year Coordinator application",
+  "main": "submit.js",
+  "scripts": {
+    "start": "node submit.js"
+  },
+  "dependencies": {}
+}
